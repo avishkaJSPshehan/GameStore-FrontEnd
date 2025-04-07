@@ -1,58 +1,45 @@
 ﻿@page "/"
 @using Models
+@using Clients
 
 <PageTitle>Game Catalog</PageTitle>
 
-<table class="table table-striped table-bordered table-hover">
-    <thead class="table-dark">
-        <th>Id</th>
-        <th>Name</th>
-        <th>Genre</th>
-        <th>Price</th>
-        <th>Release Date</th>
-        <th></th>
-    </thead>
-    <tbody>
-        @foreach (var game in games){
-            <tr>
-                <td>@game.Id</td>
-                <td>@game.Name</td>
-                <td>@game.Genre</td>
-                <td>@game.Price</td>
-                <td>@game.ReleaseDate</td>
-                <td></td>
-            </tr>
-        }
-    </tbody>
-</table>
+@if(games is null)
+{
+    <p>Loading...</p>
+}else{
+    <table class="table table-striped table-bordered table-hover mt-4">
+        <thead class="table-dark">
+            <th>Id</th>
+            <th>Name</th>
+            <th>Genre</th>
+            <th>Price</th>
+            <th>Release Date</th>
+            <th></th>
+        </thead>
+        <tbody>
+            @foreach (var game in games){
+                <tr>
+                    <td>@game.Id</td>
+                    <td>@game.Name</td>
+                    <td>@game.Genre</td>
+                    <td>@game.Price</td>
+                    <td>@game.ReleaseDate</td>
+                    <td></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 @code{
 
-    private GameSummary[] games = 
-    [
-        new(){
-            Id = 1,
-            Name = "Street Fighter II",
-            Genre = "Fighting",
-            Price = 19.99M,
-            ReleaseDate = new DateOnly(1992,7,15)
-        },
+    private GamesClient client = new();
 
-        new(){
-            Id = 2,
-            Name = "Final Fantasy XIV",
-            Genre = "Roleplayting",
-            Price = 59.99M,
-            ReleaseDate = new DateOnly(2010,9,30)
-        },
+    private GameSummary[]? games;
 
-        new(){
-            Id = 3,
-            Name = "FIFA 23",
-            Genre = "Sport",
-            Price = 69.99M,
-            ReleaseDate = new DateOnly(2022,9,27)
-        }
-    ];
-
+   protected override void OnInitialized()
+   {
+        games = client.GetGames();
+   }
 }
