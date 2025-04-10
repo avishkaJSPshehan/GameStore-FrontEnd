@@ -32,5 +32,23 @@ public class GamesClient
         }
     ];
 
+    private readonly Genre[] genres = new GenresClient().GetGenres();
+
     public GameSummary[] GetGames() => games.ToArray();
+
+    public void AddGame(GameDetails game){
+        
+        ArgumentException.ThrowIfNullOrWhiteSpace(game.GenreId);
+        var genre = genres.Single(genre => genre.Id == int.Parse(game.GenreId));
+
+        var gameSummary = new GameSummary
+        {
+            Id = games.Count + 1,
+            Name = game.Name,
+            Genre = genre.Name,
+            ReleaseDate = game.ReleaseDate
+
+        };
+        games.Add(gameSummary);
+    }
 }
