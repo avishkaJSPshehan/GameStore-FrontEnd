@@ -1,4 +1,5 @@
 ﻿@page "/editgame"
+@inject NavigationManager NavigationManager
 
 
 <PageTitle>New Game</PageTitle>
@@ -37,10 +38,12 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary">Add New</button>
+                <a role="button" class="btn btn-secondary" href="/">Cancel</a>
 
             </EditForm>
         </div>
     </div>
+    
 }
 @code {
 
@@ -61,6 +64,7 @@
 
     private void HandleSubmit(){
         gamesClient.AddGame(game);
+        NavigationManager.NavigateTo("/");
     }
 
 }

@@ -15,7 +15,7 @@ public class GamesClient
             ReleaseDate = new DateOnly(1992,7,15)
         },
 
-        new(){
+        new(){ 
             Id = 2,
             Name = "Final Fantasy XIV",
             Genre = "Roleplayting",
