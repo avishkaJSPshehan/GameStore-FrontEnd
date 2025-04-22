@@ -36,6 +36,27 @@ public class GamesClient
 
     public GameSummary[] GetGames() => games.ToArray();
 
+    public GameDetails? GetGame(int id)
+{
+    var gameSummary = games.SingleOrDefault(g => g.Id == id);
+    if (gameSummary is null)
+    {
+        return null;
+    }
+
+    var genre = genres.SingleOrDefault(g => g.Name == gameSummary.Genre);
+
+    return new GameDetails
+    {
+        Id = gameSummary.Id,
+        Name = gameSummary.Name,
+        GenreId = genre?.Id.ToString() ?? string.Empty,
+        Price = gameSummary.Price,
+        ReleaseDate = gameSummary.ReleaseDate
+    };
+}
+
+
     public void AddGame(GameDetails game){
         
         ArgumentException.ThrowIfNullOrWhiteSpace(game.GenreId);
