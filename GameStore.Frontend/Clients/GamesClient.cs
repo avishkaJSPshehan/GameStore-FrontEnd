@@ -83,6 +83,11 @@ public class GamesClient
         existingGame.ReleaseDate = updatedGame.ReleaseDate;
     }
 
+    public void DeleteGame(int id){
+        var game = GetGameSumaryById(id);
+        games.Remove(game);
+    }
+
     private GameSummary GetGameSumaryById(int id){
         GameSummary? game = games.Find(game => game.Id == id);
         ArgumentNullException.ThrowIfNull(game);
