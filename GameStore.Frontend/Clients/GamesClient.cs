@@ -5,7 +5,7 @@ namespace GameStore.Frontend.Clients;
 
 public class GamesClient
 {
-    private readonly List<GameSummary> games = 
+    private readonly List<GameSummary> games =
     [
         new(){
             Id = 1,
@@ -15,7 +15,7 @@ public class GamesClient
             ReleaseDate = new DateOnly(1992,7,15)
         },
 
-        new(){ 
+        new(){
             Id = 2,
             Name = "Final Fantasy XIV",
             Genre = "Roleplayting",
@@ -36,29 +36,31 @@ public class GamesClient
 
     public GameSummary[] GetGames() => games.ToArray();
 
-    public GameDetails? GetGame(int id)
-{
-    var gameSummary = games.SingleOrDefault(g => g.Id == id);
-    if (gameSummary is null)
+    public GameDetails GetGame(int id)
     {
-        return null;
+        GameSummary? game = games.Find(game => game.Id == id);
+        ArgumentNullException.ThrowIfNull(game);
+
+        var genre = genres.Single(genre => string.Equals(
+            genre.Name,
+            game.Genre,
+            StringComparison.OrdinalIgnoreCase
+        ));
+
+        return new GameDetails
+        {
+            Id = game.Id,
+            Name = game.Name,
+            GenreId = genre.Id.ToString(),
+            Price = game.Price,
+            ReleaseDate = game.ReleaseDate
+        };
     }
 
-    var genre = genres.SingleOrDefault(g => g.Name == gameSummary.Genre);
 
-    return new GameDetails
+    public void AddGame(GameDetails game)
     {
-        Id = gameSummary.Id,
-        Name = gameSummary.Name,
-        GenreId = genre?.Id.ToString() ?? string.Empty,
-        Price = gameSummary.Price,
-        ReleaseDate = gameSummary.ReleaseDate
-    };
-}
 
-
-    public void AddGame(GameDetails game){
-        
         ArgumentException.ThrowIfNullOrWhiteSpace(game.GenreId);
         var genre = genres.Single(genre => genre.Id == int.Parse(game.GenreId));
 
