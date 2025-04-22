@@ -18,7 +18,9 @@
             <th>Genre</th>
             <th>Price</th>
             <th>Release Date</th>
-            <th></th>
+            <th>
+                Action
+            </th>
         </thead>
         <tbody>
             @foreach (var game in games){
@@ -28,7 +30,16 @@
                     <td>@game.Genre</td>
                     <td>@game.Price</td>
                     <td>@game.ReleaseDate</td>
-                    <td></td>
+                    <td>
+                        <div>
+                            <a class="btn btn-primary me-2" role="button" href="@GameUrl(game.Id)">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a class="btn btn-danger me-2" role="button">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -44,4 +55,6 @@
    {
         games = Client.GetGames();
    }
+
+   private static string GameUrl(int id) => $"/editgame/{id}";
 }
